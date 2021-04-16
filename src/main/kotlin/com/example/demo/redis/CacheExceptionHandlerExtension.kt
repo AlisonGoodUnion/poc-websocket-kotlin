@@ -1,11 +1,15 @@
-package com.example.demo.handle
+package com.example.demo.redis
 
+import com.example.demo.dto.ChatMessagePojo
 import org.slf4j.LoggerFactory
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.reflect.KFunction1
 
 class CacheExceptionHandlerExtension<KeyType, Type>(
         private val findFunction: (chave: KeyType) -> Optional<Type>,
-        private val saveFunction: (objeto: Type) -> Type) {
+        private val saveFunction: (objeto: Type) -> Type
+) {
 
     private val LOGGER = LoggerFactory.getLogger(CacheExceptionHandlerExtension::class.java)
 
