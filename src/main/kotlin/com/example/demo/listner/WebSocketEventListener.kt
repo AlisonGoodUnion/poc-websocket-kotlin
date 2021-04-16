@@ -26,7 +26,7 @@ class WebSocketEventListener {
     fun handleWebSocketDisconnectListener(event: SessionDisconnectEvent) {
         val headerAccessor = StompHeaderAccessor.wrap(event.message)
         val username = headerAccessor.sessionAttributes!!["username"] as String?
-        val idProposta = headerAccessor.sessionAttributes!!["idProposta"] as Int?
+        val idProposta = headerAccessor.sessionAttributes!!["idProposta"] as Long
         if (username != null) {
             logger.info("User Disconnected : $username")
             val chatMessagePojo = ChatMessagePojo(

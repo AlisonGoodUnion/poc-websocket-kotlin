@@ -24,17 +24,12 @@ constructor(messageRedisRepository: IMessageRedisRepository)  {
     }
 
     fun salvar(message: ChatMessagePojo){
+        val mensagens = listar(message.idProposta)
+        mensagens.add(message)
 
+        val messageRedis = MessageRedisHash(idProposta = message.idProposta, mensagens)
 
-        listar(message.idProposta)
-                .stream()
-                .map { MessageRedisHash() }
-
-        val messagesRedis =
-        messagesRedis.add(message)
-
-        messageHandle.save(emptyList())
+        messageHandle.save(messageRedis)
         //TODO EMITIR PARA O WEBSOCKET
-        }
     }
 }
