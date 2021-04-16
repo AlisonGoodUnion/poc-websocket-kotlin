@@ -15,7 +15,12 @@ class ChatController(private val messageService: MessageService) {
     @MessageMapping("/chat.sendMessage/{idProposta}")
     @SendTo("/topic/public/{idProposta}")
     fun sendMessage(@Payload chatMessagePojo: ChatMessagePojo?): ChatMessagePojo? {
-        this.messageService?.salvar(chatMessagePojo!!)
+        if (chatMessagePojo != null) {
+            messageService.salvar(chatMessagePojo)
+        }
+        if (chatMessagePojo != null) {
+            messageService.listar(chatMessagePojo.idProposta)
+        }
         return chatMessagePojo
     }
 
@@ -28,6 +33,8 @@ class ChatController(private val messageService: MessageService) {
         // Add username in web socket session
         headerAccessor.sessionAttributes!!["username"] = chatMessagePojo.username
         headerAccessor.sessionAttributes!!["idProposta"] = chatMessagePojo.idProposta
+        messageService.salvar(chatMessagePojo)
+        messageService.listar(chatMessagePojo.idProposta)
         return chatMessagePojo
     }
 }

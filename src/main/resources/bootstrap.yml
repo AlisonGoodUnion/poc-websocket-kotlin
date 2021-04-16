@@ -1,4 +1,9 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
+    banner-mode: "off"
+  type:
+    cache: redis
   redis:
     host: localhost
     port: 6379

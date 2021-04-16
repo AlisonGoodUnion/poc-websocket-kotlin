@@ -22,20 +22,20 @@ class WebSocketEventListener {
         logger.info("Received a new web socket connection")
     }
 
-    @EventListener
-    fun handleWebSocketDisconnectListener(event: SessionDisconnectEvent) {
-        val headerAccessor = StompHeaderAccessor.wrap(event.message)
-        val username = headerAccessor.sessionAttributes!!["username"] as String?
-        val idProposta = headerAccessor.sessionAttributes!!["idProposta"] as Long
-        if (username != null) {
-            logger.info("User Disconnected : $username")
-            val chatMessagePojo = ChatMessagePojo(
-                    username = username,
-                    idProposta = idProposta
-            )
-            messagingTemplate?.convertAndSend("/topic/public/$idProposta", chatMessagePojo)
-        }
-    }
+//    @EventListener
+//    fun handleWebSocketDisconnectListener(event: SessionDisconnectEvent) {
+//        val headerAccessor = StompHeaderAccessor.wrap(event.message)
+//        val username = headerAccessor.sessionAttributes!!["username"] as String?
+//        val idProposta = headerAccessor.sessionAttributes!!["idProposta"] as Long
+//        if (username != null) {
+//            logger.info("User Disconnected : $username")
+//            val chatMessagePojo = ChatMessagePojo(
+//                    username = username,
+//                    idProposta = idProposta
+//            )
+//            messagingTemplate?.convertAndSend("/topic/public/$idProposta", chatMessagePojo)
+//        }
+//    }
 
     companion object {
         private val logger = LoggerFactory.getLogger(WebSocketEventListener::class.java)
