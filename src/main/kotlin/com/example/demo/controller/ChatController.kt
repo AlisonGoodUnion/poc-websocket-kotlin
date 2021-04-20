@@ -1,26 +1,34 @@
 package com.example.demo.controller
 
 import com.example.demo.dto.ChatMessagePojo
+import com.example.demo.redis.ChatJedisPubSub
 import com.example.demo.redis.MessageService
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor
+import org.springframework.messaging.simp.SimpMessageSendingOperations
 import org.springframework.stereotype.Controller
 
 
 @Controller
-class ChatController(private val messageService: MessageService) {
+class ChatController(
+        private val messageService: MessageService,
+        private val messagingTemplate: SimpMessageSendingOperations,
+) {
+
+    val chatJedisPubSub = ChatJedisPubSub()
 
     @MessageMapping("/chat.sendMessage/{idProposta}")
-    @SendTo("/topic/public/{idProposta}")
+//    @SendTo("/topic/public/{idProposta}")
     fun sendMessage(@Payload chatMessagePojo: ChatMessagePojo?): ChatMessagePojo? {
         if (chatMessagePojo != null) {
-            messageService.salvar(chatMessagePojo)
+//            messageService.salvar(chatMessagePojo)
+//            messageService.listar(chatMessagePojo.idProposta)
+//            messagingTemplate?.convertAndSend("/topic/public/${chatMessagePojo?.idProposta}", chatMessagePojo)
         }
-        if (chatMessagePojo != null) {
-            messageService.listar(chatMessagePojo.idProposta)
-        }
+
+        chatJedisPubSub.onMessage(chatMessagePojo?.idProposta.toString(), chatMessagePojo.toString())
         return chatMessagePojo
     }
 
@@ -33,8 +41,12 @@ class ChatController(private val messageService: MessageService) {
         // Add username in web socket session
         headerAccessor.sessionAttributes!!["username"] = chatMessagePojo.username
         headerAccessor.sessionAttributes!!["idProposta"] = chatMessagePojo.idProposta
-        messageService.salvar(chatMessagePojo)
-        messageService.listar(chatMessagePojo.idProposta)
+//        messageService.salvar(chatMessagePojo)
+//        messageService.listar(chatMessagePojo.idProposta)
+
+
+        chatJedisPubSub.onSubscribe(chatMessagePojo.idProposta.toString(), 0)
+
         return chatMessagePojo
     }
 }

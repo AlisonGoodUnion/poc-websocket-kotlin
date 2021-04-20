@@ -25,6 +25,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.apache.commons:commons-pool2:2.9.0")
+	implementation("redis.clients:jedis:3.6.0-RC1")
+	implementation("io.reactivex.rxjava3:rxkotlin:3.x.y")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 }
