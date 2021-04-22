@@ -29,6 +29,7 @@ dependencies {
 	implementation("org.apache.commons:commons-pool2:2.9.0")
 	implementation("redis.clients:jedis:3.6.0-RC1")
 	implementation("io.reactivex.rxjava3:rxkotlin:3.0.0")
+	implementation("org.springframework.kafka:spring-kafka:2.6.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 }
