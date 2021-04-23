@@ -12,7 +12,7 @@ class MessageListener {
     @Autowired
     var template: SimpMessagingTemplate? = null
 
-    @KafkaListener(topics = ["mensagem"], containerFactory = "messageKafkaListenerContainerFactory")
+    @KafkaListener( id = "containerMensagem", topics = ["mensagem"], containerFactory = "messageKafkaListenerContainerFactory", autoStartup = "false")
     fun greetingListener(message: ChatMessagePojo) {
         template?.convertAndSend("/topic/public/${message.idProposta}", message)
     }

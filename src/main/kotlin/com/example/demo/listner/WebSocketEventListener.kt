@@ -1,14 +1,12 @@
 package com.example.demo.listner
 
-import com.example.demo.dto.ChatMessagePojo
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.EventListener
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry
 import org.springframework.messaging.simp.SimpMessageSendingOperations
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.messaging.SessionConnectedEvent
-import org.springframework.web.socket.messaging.SessionDisconnectEvent
 
 
 @Component
@@ -17,9 +15,15 @@ class WebSocketEventListener {
     @Autowired
     private val messagingTemplate: SimpMessageSendingOperations? = null
 
+    @Autowired
+    private val kafkaListenerEndpointRegistry: KafkaListenerEndpointRegistry? = null
+
     @EventListener
     fun handleWebSocketConnectListener(event: SessionConnectedEvent?) {
         logger.info("Received a new web socket connection")
+        val listenerContainer =
+            kafkaListenerEndpointRegistry!!.getListenerContainer("containerMensagem")
+        listenerContainer.start()
     }
 
 //    @EventListener
